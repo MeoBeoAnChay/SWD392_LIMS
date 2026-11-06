@@ -1,6 +1,7 @@
 package com.lims.controller;
 
 import com.google.gson.Gson;
+import com.lims.util.Constants;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,7 +39,7 @@ public abstract class BaseServlet extends HttpServlet {
     @SuppressWarnings("unchecked")
     protected <T> T getCurrentUser(HttpServletRequest req) {
         HttpSession session = req.getSession(false);
-        return (session != null) ? (T) session.getAttribute("currentUser") : null;
+        return (session != null) ? (T) session.getAttribute(Constants.SESSION_USER) : null;
     }
 
     protected String getClientIP(HttpServletRequest req) {

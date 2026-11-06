@@ -1,11 +1,86 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
-    <title>LIMS - Laptop Inventory Management System</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Chủ - LIMS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
-    <h1>LIMS Application</h1>
-    <p>Hệ thống đã sẵn sàng cho việc phát triển các tính năng.</p>
+<body class="bg-slate-50 min-h-screen text-slate-800">
+
+    <!-- Top Navbar -->
+    <header class="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-blue-600 text-white flex items-center justify-center font-bold text-lg shadow">
+                    <i class="fa-solid fa-laptop"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold text-slate-800 leading-tight">LIMS</h1>
+                    <p class="text-xs text-slate-500">Laptop Inventory Management System</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <div class="text-right">
+                    <p class="text-sm font-semibold text-slate-800">${sessionScope.LOGIN_USER.fullName}</p>
+                    <p class="text-xs text-slate-500">
+                        <c:forEach var="r" items="${sessionScope.LOGIN_USER.roles}" varStatus="status">
+                            <span class="inline-block bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-[11px] font-medium mr-1">${r.roleName}</span>
+                        </c:forEach>
+                    </p>
+                </div>
+                <a href="${pageContext.request.contextPath}/logout"
+                   class="bg-rose-50 hover:bg-rose-100 text-rose-600 px-3 py-2 rounded-lg text-sm font-medium border border-rose-200 transition flex items-center gap-2">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    <span>Đăng xuất</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 sm:p-8">
+            <div class="flex items-center gap-4 pb-6 border-b border-slate-100">
+                <div class="w-14 h-14 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-2xl shadow-inner">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <div>
+                    <h2 class="text-xl font-bold text-slate-800">Đăng nhập thành công!</h2>
+                    <p class="text-sm text-slate-500 mt-1">Chào mừng <span class="font-semibold text-slate-700">${sessionScope.LOGIN_USER.fullName}</span> (@${sessionScope.LOGIN_USER.username}) đã vào hệ thống.</p>
+                </div>
+            </div>
+
+            <!-- User Info Card -->
+            <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 space-y-2 text-sm">
+                    <p class="font-semibold text-slate-700 text-xs uppercase tracking-wider text-slate-400">Thông tin tài khoản</p>
+                    <p><span class="text-slate-500">Tên đăng nhập:</span> <span class="font-medium">${sessionScope.LOGIN_USER.username}</span></p>
+                    <p><span class="text-slate-500">Họ và tên:</span> <span class="font-medium">${sessionScope.LOGIN_USER.fullName}</span></p>
+                    <p><span class="text-slate-500">Email:</span> <span class="font-medium">${sessionScope.LOGIN_USER.email}</span></p>
+                    <p><span class="text-slate-500">Số điện thoại:</span> <span class="font-medium">${empty sessionScope.LOGIN_USER.phone ? 'Chưa cập nhật' : sessionScope.LOGIN_USER.phone}</span></p>
+                </div>
+
+                <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 space-y-2 text-sm">
+                    <p class="font-semibold text-slate-700 text-xs uppercase tracking-wider text-slate-400">Vai trò & Phân quyền (RBAC)</p>
+                    <div class="flex flex-wrap gap-2 pt-1">
+                        <c:forEach var="r" items="${sessionScope.LOGIN_USER.roles}">
+                            <div class="bg-white border border-slate-300 rounded px-2.5 py-1 text-xs">
+                                <span class="font-semibold text-blue-700">${r.roleName}</span>
+                                <c:if test="${not empty r.description}">
+                                    <span class="text-slate-400 block text-[11px]">${r.description}</span>
+                                </c:if>
+                            </div>
+                        </c:forEach>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
 </body>
 </html>
