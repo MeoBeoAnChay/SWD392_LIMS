@@ -1,5 +1,7 @@
 package com.lims.controller;
 
+import com.lims.model.User;
+import com.lims.service.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,11 +15,14 @@ import java.io.IOException;
  */
 @WebServlet(name = "LogoutServlet", urlPatterns = {"/logout"})
 public class LogoutServlet extends BaseServlet {
+    private final UserService userService = new UserService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(false);
         if (session != null) {
+            User user = (User) session.getAttribute(com.lims.util.Constants.SESSION_USER);
+            userService.recordLogout(user, getClientIP(req), req.getHeader("User-Agent"));
             session.invalidate();
         }
         redirect(req, resp, "/login?status=logged_out");

@@ -74,7 +74,7 @@
             <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Tài khoản kiểm thử mẫu:</p>
             <div class="bg-slate-50 p-3 rounded-lg text-xs text-slate-600 space-y-1 border border-slate-200">
                 <p><span class="font-semibold text-slate-700">Username:</span> <code class="bg-slate-200 px-1 py-0.5 rounded text-blue-700">admin</code> | <code class="bg-slate-200 px-1 py-0.5 rounded text-blue-700">manager</code> | <code class="bg-slate-200 px-1 py-0.5 rounded text-blue-700">warehouse</code></p>
-                <p><span class="font-semibold text-slate-700">Mật khẩu mặc định:</span> <code class="bg-slate-200 px-1 py-0.5 rounded text-rose-700">admin123</code></p>
+                <p><span class="font-semibold text-slate-700">Mật khẩu mặc định:</span> <code class="bg-slate-200 px-1 py-0.5 rounded text-rose-700">123456</code></p>
             </div>
         </div>
     </div>

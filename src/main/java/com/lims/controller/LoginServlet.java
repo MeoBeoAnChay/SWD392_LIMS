@@ -41,10 +41,11 @@ public class LoginServlet extends BaseServlet {
             return;
         }
 
-        User user = userService.authenticate(username, password);
+        User user = userService.authenticate(username, password, getClientIP(req), req.getHeader("User-Agent"));
 
         if (user != null) {
             HttpSession session = req.getSession(true);
+            req.changeSessionId();
             session.setAttribute(Constants.SESSION_USER, user);
             redirect(req, resp, "/home");
         } else {

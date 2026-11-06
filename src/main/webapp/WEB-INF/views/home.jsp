@@ -25,6 +25,11 @@
             </div>
 
             <div class="flex items-center gap-4">
+                <c:forEach var="r" items="${sessionScope.LOGIN_USER.roles}">
+                    <c:if test="${r.roleName == 'Admin'}">
+                        <a href="${pageContext.request.contextPath}/app/admin/users" class="rounded-lg bg-blue-50 px-3 py-2 text-sm font-medium text-blue-700 border border-blue-200"><i class="fa-solid fa-user-shield mr-1"></i> Quản trị</a>
+                    </c:if>
+                </c:forEach>
                 <div class="text-right">
                     <p class="text-sm font-semibold text-slate-800">${sessionScope.LOGIN_USER.fullName}</p>
                     <p class="text-xs text-slate-500">
