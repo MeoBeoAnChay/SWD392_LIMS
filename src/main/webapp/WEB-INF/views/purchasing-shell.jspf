@@ -1,0 +1,29 @@
+<%@ page pageEncoding="UTF-8" %>
+<div class="min-h-screen lg:flex">
+    <aside class="fixed inset-y-0 left-0 z-20 hidden w-64 flex-col border-r border-slate-200 bg-white lg:flex">
+        <a href="${pageContext.request.contextPath}/app/purchasing/dashboard" class="flex h-16 items-center gap-3 border-b border-slate-100 px-5 font-bold"><span class="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-600 text-white"><i class="fa-solid fa-laptop"></i></span><span>LIMS<span class="block text-xs font-normal text-slate-500">Purchasing Staff</span></span></a>
+        <nav class="flex-1 space-y-1 p-3 text-sm">
+            <a href="${pageContext.request.contextPath}/app/purchasing/dashboard" class="flex items-center gap-3 rounded-lg px-3 py-2.5 ${activeMenu == 'dashboard' ? 'bg-emerald-50 font-semibold text-emerald-700' : 'text-slate-600 hover:bg-slate-50'}"><i class="fa-solid fa-chart-pie w-5"></i> Dashboard</a>
+            <p class="px-3 pb-1 pt-4 text-[11px] font-bold uppercase tracking-wider text-slate-400">Purchase Orders</p>
+            <a href="${pageContext.request.contextPath}/app/purchasing/requests" class="flex items-center gap-3 rounded-lg px-3 py-2.5 ${activeMenu == 'orders' ? 'bg-emerald-50 font-semibold text-emerald-700' : 'text-slate-600 hover:bg-slate-50'}"><i class="fa-solid fa-file-lines w-5"></i> Danh sách đơn hàng</a>
+            <a href="${pageContext.request.contextPath}/app/purchasing/requests?status=COMPLETED" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-slate-600 hover:bg-slate-50"><i class="fa-solid fa-clock-rotate-left w-5"></i> Lịch sử mua hàng</a>
+            <p class="px-3 pb-1 pt-4 text-[11px] font-bold uppercase tracking-wider text-slate-400">Handovers</p>
+            <a href="${pageContext.request.contextPath}/app/purchasing/handovers" class="flex items-center gap-3 rounded-lg px-3 py-2.5 ${activeMenu == 'handovers' ? 'bg-emerald-50 font-semibold text-emerald-700' : 'text-slate-600 hover:bg-slate-50'}"><i class="fa-solid fa-truck-ramp-box w-5"></i> Danh sách bàn giao</a>
+            <p class="px-3 pb-1 pt-4 text-[11px] font-bold uppercase tracking-wider text-slate-400">Suppliers</p>
+            <a href="${pageContext.request.contextPath}/app/purchasing/suppliers" class="flex items-center gap-3 rounded-lg px-3 py-2.5 ${activeMenu == 'suppliers' ? 'bg-emerald-50 font-semibold text-emerald-700' : 'text-slate-600 hover:bg-slate-50'}"><i class="fa-solid fa-building w-5"></i> Nhà cung cấp</a>
+            <a href="${pageContext.request.contextPath}/app/purchasing/supplier-form" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-slate-600 hover:bg-slate-50"><i class="fa-solid fa-building-circle-check w-5"></i> Thêm nhà cung cấp</a>
+            <p class="px-3 pb-1 pt-4 text-[11px] font-bold uppercase tracking-wider text-slate-400">Account</p>
+            <a href="${pageContext.request.contextPath}/app/purchasing/profile" class="flex items-center gap-3 rounded-lg px-3 py-2.5 ${activeMenu == 'account' ? 'bg-emerald-50 font-semibold text-emerald-700' : 'text-slate-600 hover:bg-slate-50'}"><i class="fa-solid fa-user-gear w-5"></i> Thông tin cá nhân</a>
+            <a href="${pageContext.request.contextPath}/logout" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-rose-600 hover:bg-rose-50"><i class="fa-solid fa-arrow-right-from-bracket w-5"></i> Đăng xuất</a>
+        </nav>
+        <div class="border-t border-slate-100 p-4 text-xs text-slate-500"><c:out value="${user.fullName}"/><br/><span>@<c:out value="${user.username}"/></span></div>
+    </aside>
+    <div class="min-w-0 flex-1 lg:ml-64">
+        <header class="sticky top-0 z-10 flex h-16 items-center justify-between border-b border-slate-200 bg-white/95 px-4 backdrop-blur sm:px-6">
+            <div class="font-semibold text-slate-700">Laptop Inventory Management System</div>
+            <div class="flex items-center gap-3 text-sm"><span class="hidden text-slate-500 sm:inline"><c:out value="${user.fullName}"/></span><a class="text-rose-600 lg:hidden" href="${pageContext.request.contextPath}/logout">Đăng xuất</a></div>
+        </header>
+        <div class="border-b border-slate-200 bg-white px-3 py-2 lg:hidden"><div class="flex gap-2 overflow-x-auto text-xs"><a class="whitespace-nowrap rounded-lg bg-slate-100 px-3 py-2" href="${pageContext.request.contextPath}/app/purchasing/dashboard">Dashboard</a><a class="whitespace-nowrap rounded-lg bg-slate-100 px-3 py-2" href="${pageContext.request.contextPath}/app/purchasing/requests">Đơn mua</a><a class="whitespace-nowrap rounded-lg bg-slate-100 px-3 py-2" href="${pageContext.request.contextPath}/app/purchasing/requests?status=COMPLETED">Lịch sử</a><a class="whitespace-nowrap rounded-lg bg-slate-100 px-3 py-2" href="${pageContext.request.contextPath}/app/purchasing/handovers">Bàn giao</a><a class="whitespace-nowrap rounded-lg bg-slate-100 px-3 py-2" href="${pageContext.request.contextPath}/app/purchasing/suppliers">Nhà cung cấp</a><a class="whitespace-nowrap rounded-lg bg-slate-100 px-3 py-2" href="${pageContext.request.contextPath}/app/purchasing/supplier-form">Thêm NCC</a><a class="whitespace-nowrap rounded-lg bg-slate-100 px-3 py-2" href="${pageContext.request.contextPath}/app/purchasing/profile">Tài khoản</a></div></div>
+        <main class="mx-auto max-w-7xl space-y-6 px-4 py-6 sm:px-6 sm:py-8">
+            <c:if test="${not empty param.notice}"><div class="rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-800"><c:out value="${param.notice}"/></div></c:if>
+            <c:if test="${not empty param.error}"><div class="rounded-lg border border-rose-200 bg-rose-50 p-3 text-sm text-rose-800"><c:out value="${param.error}"/></div></c:if>

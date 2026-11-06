@@ -8,6 +8,7 @@ public class ImportRequestItem {
     private String productName;
     private int quantity;
     private BigDecimal unitPrice;
+    private int handoverRemainingQuantity;
 
     public int getProductId() { return productId; }
     public void setProductId(int productId) { this.productId = productId; }
@@ -19,4 +20,6 @@ public class ImportRequestItem {
     public void setQuantity(int quantity) { this.quantity = quantity; }
     public BigDecimal getUnitPrice() { return unitPrice; }
     public void setUnitPrice(BigDecimal unitPrice) { this.unitPrice = unitPrice; }
+    public int getHandoverRemainingQuantity() { return handoverRemainingQuantity; }
+    public void setHandoverRemainingQuantity(int handoverRemainingQuantity) { this.handoverRemainingQuantity = handoverRemainingQuantity; }
 }

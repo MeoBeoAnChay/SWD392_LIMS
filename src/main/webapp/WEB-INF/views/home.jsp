@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="vi">
@@ -30,7 +30,21 @@
                         <a href="${pageContext.request.contextPath}/app/admin/users" class="rounded-lg bg-blue-50 px-3 py-2 text-sm font-medium text-blue-700 border border-blue-200"><i class="fa-solid fa-user-shield mr-1"></i> Quản trị</a>
                     </c:if>
                     <c:if test="${r.roleName == 'Purchasing Staff'}">
-                        <a href="${pageContext.request.contextPath}/app/purchasing/requests" class="rounded-lg bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-700 border border-emerald-200"><i class="fa-solid fa-cart-shopping mr-1"></i> Mua hàng</a>
+                        <a href="${pageContext.request.contextPath}/app/purchasing/dashboard" class="rounded-lg bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-700 border border-emerald-200"><i class="fa-solid fa-cart-shopping mr-1"></i> Mua hàng</a>
+                    </c:if>
+                    <c:if test="${r.roleName == 'Sales Staff'}"><a href="${pageContext.request.contextPath}/app/sales/export-requests" class="rounded-lg bg-indigo-50 px-3 py-2 text-sm font-medium text-indigo-700 border border-indigo-200"><i class="fa-solid fa-file-export mr-1"></i> Yêu cầu xuất kho</a></c:if>
+                    <c:if test="${r.roleName == 'Manager'}">
+                        <a href="${pageContext.request.contextPath}/app/manager/export-requests" class="rounded-lg bg-indigo-50 px-3 py-2 text-sm font-medium text-indigo-700 border border-indigo-200"><i class="fa-solid fa-file-export mr-1"></i> Duyệt yêu cầu xuất</a>
+                        <a href="${pageContext.request.contextPath}/app/manager/export-receipts" class="rounded-lg bg-amber-50 px-3 py-2 text-sm font-medium text-amber-700 border border-amber-200"><i class="fa-solid fa-box-open mr-1"></i> Duyệt phiếu xuất</a>
+                        <a href="${pageContext.request.contextPath}/app/manager/import-requests" class="rounded-lg bg-indigo-50 px-3 py-2 text-sm font-medium text-indigo-700 border border-indigo-200"><i class="fa-solid fa-clipboard-check mr-1"></i> Duyệt đơn mua</a>
+                        <a href="${pageContext.request.contextPath}/app/manager/import-receipts" class="rounded-lg bg-amber-50 px-3 py-2 text-sm font-medium text-amber-700 border border-amber-200"><i class="fa-solid fa-boxes-stacked mr-1"></i> Duyệt phiếu nhập</a>
+                        <a href="${pageContext.request.contextPath}/app/manager/stocktakes" class="rounded-lg bg-violet-50 px-3 py-2 text-sm font-medium text-violet-700 border border-violet-200"><i class="fa-solid fa-clipboard-list mr-1"></i> Kiểm kê kho</a>
+                    </c:if>
+                    <c:if test="${r.roleName == 'Manager'}"><a href="${pageContext.request.contextPath}/app/manager/catalog?tab=products" class="rounded-lg bg-slate-100 px-3 py-2 text-sm font-medium text-slate-700 border border-slate-200"><i class="fa-solid fa-database mr-1"></i> Master Data</a></c:if>
+                    <c:if test="${r.roleName == 'Warehouse Staff'}">
+                        <a href="${pageContext.request.contextPath}/app/warehouse/export-requests" class="rounded-lg bg-amber-50 px-3 py-2 text-sm font-medium text-amber-700 border border-amber-200"><i class="fa-solid fa-box-open mr-1"></i> Soạn hàng xuất</a>
+                        <a href="${pageContext.request.contextPath}/app/warehouse/handovers" class="rounded-lg bg-amber-50 px-3 py-2 text-sm font-medium text-amber-700 border border-amber-200"><i class="fa-solid fa-warehouse mr-1"></i> Tiếp nhận hàng</a>
+                        <a href="${pageContext.request.contextPath}/app/warehouse/stocktakes" class="rounded-lg bg-violet-50 px-3 py-2 text-sm font-medium text-violet-700 border border-violet-200"><i class="fa-solid fa-clipboard-list mr-1"></i> Kiểm kho</a>
                     </c:if>
                 </c:forEach>
                 <div class="text-right">

@@ -1,0 +1,13 @@
+/* Sales request assignment and manager approval for warehouse export receipts. Safe to rerun. */
+IF COL_LENGTH('EXPORT_REQUESTS','AssignedTo') IS NULL ALTER TABLE EXPORT_REQUESTS ADD AssignedTo INT NULL;
+IF COL_LENGTH('EXPORT_RECEIPTS','ApprovedBy') IS NULL ALTER TABLE EXPORT_RECEIPTS ADD ApprovedBy INT NULL;
+IF COL_LENGTH('EXPORT_RECEIPTS','ApprovedDate') IS NULL ALTER TABLE EXPORT_RECEIPTS ADD ApprovedDate DATETIME NULL;
+IF COL_LENGTH('EXPORT_RECEIPTS','CancelReason') IS NULL ALTER TABLE EXPORT_RECEIPTS ADD CancelReason NVARCHAR(255) NULL;
+GO
+IF NOT EXISTS(SELECT 1 FROM sys.foreign_keys WHERE name='FK_ExportRequests_AssignedTo')
+    ALTER TABLE EXPORT_REQUESTS ADD CONSTRAINT FK_ExportRequests_AssignedTo FOREIGN KEY(AssignedTo) REFERENCES USERS(UserID);
+IF NOT EXISTS(SELECT 1 FROM sys.foreign_keys WHERE name='FK_ExportReceipts_ApprovedBy')
+    ALTER TABLE EXPORT_RECEIPTS ADD CONSTRAINT FK_ExportReceipts_ApprovedBy FOREIGN KEY(ApprovedBy) REFERENCES USERS(UserID);
+IF NOT EXISTS(SELECT 1 FROM sys.indexes WHERE object_id=OBJECT_ID('EXPORT_RECEIPT_DETAILS') AND name='UQ_ExportReceiptDetails_Serial')
+    CREATE UNIQUE INDEX UQ_ExportReceiptDetails_Serial ON EXPORT_RECEIPT_DETAILS(ExportReceiptID,SerialNumber);
+GO

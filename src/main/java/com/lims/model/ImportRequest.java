@@ -11,6 +11,9 @@ public class ImportRequest {
     private Timestamp requestDate;
     private String status;
     private String cancelReason;
+    private String createdByName;
+    private String approvedByName;
+    private Timestamp approvedDate;
     private List<ImportRequestItem> items = new ArrayList<>();
     private List<Handover> handovers = new ArrayList<>();
     private int orderedQuantity;
@@ -28,6 +31,12 @@ public class ImportRequest {
     public void setStatus(String status) { this.status = status; }
     public String getCancelReason() { return cancelReason; }
     public void setCancelReason(String cancelReason) { this.cancelReason = cancelReason; }
+    public String getCreatedByName() { return createdByName; }
+    public void setCreatedByName(String createdByName) { this.createdByName = createdByName; }
+    public String getApprovedByName() { return approvedByName; }
+    public void setApprovedByName(String approvedByName) { this.approvedByName = approvedByName; }
+    public Timestamp getApprovedDate() { return approvedDate; }
+    public void setApprovedDate(Timestamp approvedDate) { this.approvedDate = approvedDate; }
     public List<ImportRequestItem> getItems() { return items; }
     public void setItems(List<ImportRequestItem> items) { this.items = items == null ? new ArrayList<>() : items; }
     public List<Handover> getHandovers() { return handovers; }

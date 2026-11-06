@@ -1,0 +1,2 @@
+package com.lims.model;
+public class ProductLine {private int productLineId,brandId;private String brandName,lineName,status;public int getProductLineId(){return productLineId;}public void setProductLineId(int v){productLineId=v;}public int getBrandId(){return brandId;}public void setBrandId(int v){brandId=v;}public String getBrandName(){return brandName;}public void setBrandName(String v){brandName=v;}public String getLineName(){return lineName;}public void setLineName(String v){lineName=v;}public String getStatus(){return status;}public void setStatus(String v){status=v;}}

@@ -65,6 +65,17 @@ public class UserDAO {
         }
     }
 
+    public boolean changePassword(int userId, String currentHash, String newHash) {
+        String sql = "UPDATE USERS SET PasswordHash=? WHERE UserID=? AND PasswordHash=? AND Status='ACTIVE'";
+        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, newHash); ps.setInt(2, userId); ps.setString(3, currentHash);
+            return ps.executeUpdate() == 1;
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Unable to change password for user " + userId, e);
+            return false;
+        }
+    }
+
     public int countActiveAdmins() {
         String sql = "SELECT COUNT(DISTINCT u.UserID) FROM USERS u JOIN USER_ROLES ur ON ur.UserID = u.UserID JOIN ROLES r ON r.RoleID = ur.RoleID " +
                 "WHERE u.Status = 'ACTIVE' AND LOWER(r.RoleName) = LOWER(?)";

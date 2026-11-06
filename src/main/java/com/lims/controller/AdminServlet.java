@@ -39,7 +39,7 @@ public class AdminServlet extends BaseServlet {
             String username = req.getParameter("username");
             req.setAttribute("actionFilter", action == null ? "" : action);
             req.setAttribute("usernameFilter", username == null ? "" : username);
-            req.setAttribute("auditActions", Arrays.asList("LOGIN", "LOGOUT", "CREATE", "UPDATE", "UPDATE_ROLES"));
+            req.setAttribute("auditActions", Arrays.asList("LOGIN", "LOGOUT", "CREATE", "UPDATE", "UPDATE_ROLES", "APPROVE", "REJECT"));
             req.setAttribute("auditLogs", auditLogDAO.findRecent(action, username));
         }
         req.setAttribute("notice", req.getParameter("notice"));

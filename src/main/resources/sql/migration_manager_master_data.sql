@@ -1,0 +1,6 @@
+/* Enable safe deactivation for customer and product-line master records. */
+IF COL_LENGTH('PRODUCT_LINES','Status') IS NULL
+    ALTER TABLE PRODUCT_LINES ADD Status NVARCHAR(20) NOT NULL CONSTRAINT DF_ProductLines_Status DEFAULT 'ACTIVE';
+IF COL_LENGTH('CUSTOMERS','Status') IS NULL
+    ALTER TABLE CUSTOMERS ADD Status NVARCHAR(20) NOT NULL CONSTRAINT DF_Customers_Status DEFAULT 'ACTIVE';
+GO
