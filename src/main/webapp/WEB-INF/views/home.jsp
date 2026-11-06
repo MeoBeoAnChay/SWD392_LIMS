@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
+﻿<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="vi">
@@ -42,7 +42,7 @@
                     </c:if>
                     <c:if test="${r.roleName == 'Manager'}"><a href="${pageContext.request.contextPath}/app/manager/catalog?tab=products" class="rounded-lg bg-slate-100 px-3 py-2 text-sm font-medium text-slate-700 border border-slate-200"><i class="fa-solid fa-database mr-1"></i> Master Data</a></c:if>
                     <c:if test="${r.roleName == 'Warehouse Staff'}">
-                        <a href="${pageContext.request.contextPath}/app/warehouse/export-requests" class="rounded-lg bg-amber-50 px-3 py-2 text-sm font-medium text-amber-700 border border-amber-200"><i class="fa-solid fa-box-open mr-1"></i> Soạn hàng xuất</a>
+                        <a href="${pageContext.request.contextPath}/app/warehouse/dashboard" class="rounded-lg bg-amber-50 px-3 py-2 text-sm font-medium text-amber-700 border border-amber-200"><i class="fa-solid fa-chart-pie mr-1"></i> Dashboard kho</a><a href="${pageContext.request.contextPath}/app/warehouse/export-requests" class="rounded-lg bg-amber-50 px-3 py-2 text-sm font-medium text-amber-700 border border-amber-200"><i class="fa-solid fa-box-open mr-1"></i> Soạn hàng xuất</a>
                         <a href="${pageContext.request.contextPath}/app/warehouse/handovers" class="rounded-lg bg-amber-50 px-3 py-2 text-sm font-medium text-amber-700 border border-amber-200"><i class="fa-solid fa-warehouse mr-1"></i> Tiếp nhận hàng</a>
                         <a href="${pageContext.request.contextPath}/app/warehouse/stocktakes" class="rounded-lg bg-violet-50 px-3 py-2 text-sm font-medium text-violet-700 border border-violet-200"><i class="fa-solid fa-clipboard-list mr-1"></i> Kiểm kho</a>
                     </c:if>
@@ -106,3 +106,4 @@
 
 </body>
 </html>
+

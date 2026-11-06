@@ -17,8 +17,9 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 @WebServlet(name = "WarehouseServlet", urlPatterns = {
-        "/app/warehouse/handovers", "/app/warehouse/import-receipt-form", "/app/warehouse/import-receipts",
-        "/app/warehouse/stocktakes", "/app/warehouse/stocktake-form", "/app/warehouse/export-requests",
+        "/app/warehouse/dashboard",
+        "/app/warehouse/handovers", "/app/warehouse/import-history", "/app/warehouse/import-receipt-form", "/app/warehouse/import-receipts",
+        "/app/warehouse/stocktakes", "/app/warehouse/stocktake-form", "/app/warehouse/export-requests", "/app/warehouse/export-history",
         "/app/warehouse/export-form", "/app/warehouse/export-receipts"
 })
 public class WarehouseServlet extends BaseServlet {
@@ -34,26 +35,47 @@ public class WarehouseServlet extends BaseServlet {
         req.setAttribute("user", user);
         req.setAttribute("notice", req.getParameter("notice"));
         req.setAttribute("error", req.getParameter("error"));
-        if(req.getServletPath().endsWith("/export-form")){
+        if(req.getServletPath().endsWith("/dashboard")){
+            req.setAttribute("activeWarehouseMenu","dashboard");
+            java.util.List<Handover> allHandovers=warehouseService.getAssignedHandovers(user.getUserId());
+            req.setAttribute("handovers",allHandovers);
+            req.setAttribute("importHistory",allHandovers.stream().filter(h->!"WAITING".equals(h.getReceiptStatus())&& !"REJECTED".equals(h.getReceiptStatus())).toList());
+            req.setAttribute("exportRequests",exportService.assignedRequests(user.getUserId()));
+            req.setAttribute("exportReceipts",exportService.receiptsByStaff(user.getUserId()));
+            req.setAttribute("stocktakes",stocktakeService.assigned(user.getUserId()));
+            forward(req,resp,"warehouse-dashboard.jsp");
+        } else if(req.getServletPath().endsWith("/export-form")){
+            req.setAttribute("activeWarehouseMenu","exports");
             int id=parseId(req.getParameter("requestId"));com.lims.model.ExportRequest request=exportService.request(id);
             if(request==null||request.getAssignedTo()!=user.getUserId()||!"APPROVED".equals(request.getStatus())){redirectWith(req,resp,"/app/warehouse/export-requests","error","Yêu cầu không được giao cho bạn hoặc không còn chờ soạn hàng.");return;}
             req.setAttribute("exportRequest",request);req.setAttribute("availableSerials",exportService.available(id,user.getUserId()));forward(req,resp,"warehouse-export-form.jsp");
         } else if (req.getServletPath().endsWith("/stocktake-form")) {
+            req.setAttribute("activeWarehouseMenu","stocktakes");
             int id=parseId(req.getParameter("checkId")); Stocktake check=stocktakeService.find(id);
             if(check==null||check.getAssignedTo()!=user.getUserId()||!("ASSIGNED".equals(check.getStatus())||"REJECTED".equals(check.getStatus()))){redirectWith(req,resp,"/app/warehouse/stocktakes","error","Đợt kiểm kho không được giao cho bạn hoặc đã gửi duyệt.");return;}
             req.setAttribute("check",check);req.setAttribute("products",purchasingService.getProducts());forward(req,resp,"warehouse-stocktake-form.jsp");
         } else if (req.getServletPath().endsWith("/import-receipt-form")) {
+            req.setAttribute("activeWarehouseMenu","handovers");
             int handoverId = parseId(req.getParameter("handoverId"));
             Handover handover = warehouseService.getAvailableHandover(handoverId, user.getUserId());
             if (handover == null) { redirectWith(req, resp, "/app/warehouse/handovers", "error", "Không tìm thấy phiếu bàn giao được giao cho bạn hoặc phiếu đã gửi duyệt."); return; }
             req.setAttribute("handover", handover);
             forward(req, resp, "warehouse-import-receipt-form.jsp");
+        } else if(req.getServletPath().endsWith("/export-history")){
+            req.setAttribute("activeWarehouseMenu","exports");req.setAttribute("exportReceipts",exportService.receiptsByStaff(user.getUserId()));forward(req,resp,"warehouse-export-history.jsp");
         } else if(req.getServletPath().endsWith("/export-requests")){
-            req.setAttribute("exportRequests",exportService.assignedRequests(user.getUserId()));req.setAttribute("exportReceipts",exportService.receiptsByStaff(user.getUserId()));forward(req,resp,"warehouse-export-requests.jsp");
+            req.setAttribute("activeWarehouseMenu","exports");
+            req.setAttribute("exportRequests",exportService.assignedRequests(user.getUserId()));forward(req,resp,"warehouse-export-requests.jsp");
         } else if(req.getServletPath().endsWith("/stocktakes")) {
+            req.setAttribute("activeWarehouseMenu","stocktakes");
             req.setAttribute("stocktakes",stocktakeService.assigned(user.getUserId()));forward(req,resp,"warehouse-stocktakes.jsp");
+        } else if(req.getServletPath().endsWith("/import-history")) {
+            req.setAttribute("activeWarehouseMenu","handovers");
+            req.setAttribute("handovers",warehouseService.getAssignedHandovers(user.getUserId()).stream().filter(h->!"WAITING".equals(h.getReceiptStatus())&& !"REJECTED".equals(h.getReceiptStatus())).toList());
+            forward(req,resp,"warehouse-import-history.jsp");
         } else {
-            req.setAttribute("handovers", warehouseService.getAssignedHandovers(user.getUserId()));
+            req.setAttribute("activeWarehouseMenu","handovers");
+            req.setAttribute("handovers", warehouseService.getAssignedHandovers(user.getUserId()).stream().filter(h->"WAITING".equals(h.getReceiptStatus())||"REJECTED".equals(h.getReceiptStatus())).toList());
             forward(req, resp, "warehouse-handovers.jsp");
         }
     }
