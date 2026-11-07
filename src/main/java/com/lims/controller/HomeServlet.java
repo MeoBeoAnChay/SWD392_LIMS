@@ -21,7 +21,6 @@ public class HomeServlet extends BaseServlet {
             redirect(req, resp, "/login");
             return;
         }
-        req.setAttribute("user", user);
-        forward(req, resp, "home.jsp");
+        redirect(req, resp, user.getDefaultRedirectUrl());
     }
 }

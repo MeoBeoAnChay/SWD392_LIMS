@@ -403,4 +403,15 @@ public class PurchasingDAO {
             }
         }
     }
+
+    public List<String> findAllWarehouseLocations() {
+        List<String> locations = new ArrayList<>();
+        String sql = "SELECT LocationName FROM WAREHOUSE_LOCATIONS ORDER BY LocationName";
+        try (Connection conn = DBContext.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) locations.add(rs.getString("LocationName"));
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Unable to list warehouse locations", e);
+        }
+        return locations;
+    }
 }

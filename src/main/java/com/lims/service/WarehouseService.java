@@ -3,6 +3,8 @@ package com.lims.service;
 import com.lims.dao.WarehouseDAO;
 import com.lims.model.Handover;
 import com.lims.model.ImportReceiptItem;
+import com.lims.model.ImportReceipt;
+import com.lims.model.InventoryItem;
 import com.lims.model.User;
 
 import java.util.ArrayList;
@@ -61,4 +63,53 @@ public class WarehouseService {
                 Map.of("handoverId", handoverId, "itemCount", items.size(), "paperSigned", true, "note", cleanNote), ipAddress, userAgent);
         return receiptId;
     }
+
+    public List<ImportReceipt> searchImportReceipts(int userId, String serial, String status, String keyword) {
+        return warehouseDAO.searchImportReceipts(userId, serial, status, keyword);
+    }
+
+    public ImportReceipt getImportReceiptDetail(int receiptId, int userId) {
+        return warehouseDAO.findImportReceiptById(receiptId, userId);
+    }
+
+    public List<InventoryItem> searchInventory(String serial, String location, String status, String keyword, int productId) {
+        return warehouseDAO.searchInventory(serial, location, status, keyword, productId);
+    }
+
+    public List<InventoryItem> searchInventory(String serial, String location, String status, String keyword) {
+        return warehouseDAO.searchInventory(serial, location, status, keyword, 0);
+    }
+
+    public InventoryItem findInventoryItem(int inventoryId) {
+        return warehouseDAO.findInventoryItemById(inventoryId);
+    }
+
+    public List<String> getWarehouseLocations() {
+        return warehouseDAO.findAllWarehouseLocations();
+    }
+
+    public Map<String, Object> getInventoryMetrics() {
+        return warehouseDAO.getWarehouseInventoryMetrics();
+    }
+
+    public boolean updatePhysicalCondition(User actor, int inventoryId, String status, String location, String note, String ip, String agent) {
+        InventoryItem existing = warehouseDAO.findInventoryItemById(inventoryId);
+        if (existing == null) throw new IllegalArgumentException("Không tìm thấy máy trong kho.");
+        String cleanStatus = status == null ? "" : status.trim().toUpperCase();
+        if (!Set.of("IN_STOCK", "DAMAGED", "RETURNED").contains(cleanStatus)) {
+            throw new IllegalArgumentException("Tình trạng vật lý chỉ có thể cập nhật: Sẵn sàng xuất (IN_STOCK), Hỏng/Lỗi (DAMAGED) hoặc Trả hàng NCC (RETURNED).");
+        }
+        String cleanLocation = location == null ? "" : location.trim();
+        if (cleanLocation.isEmpty() || cleanLocation.length() > 50) {
+            throw new IllegalArgumentException("Vị trí kho là bắt buộc và tối đa 50 ký tự.");
+        }
+        boolean ok = warehouseDAO.updatePhysicalItemCondition(inventoryId, cleanStatus, cleanLocation);
+        if (ok) {
+            Map<String, Object> oldVal = Map.of("status", existing.getStatus(), "location", existing.getLocation());
+            Map<String, Object> newVal = Map.of("status", cleanStatus, "location", cleanLocation, "note", note == null ? "" : note.trim());
+            auditLogService.logAction(actor.getUserId(), actor.getUsername(), "UPDATE", "INVENTORY", String.valueOf(inventoryId), oldVal, newVal, ip, agent);
+        }
+        return ok;
+    }
+
 }

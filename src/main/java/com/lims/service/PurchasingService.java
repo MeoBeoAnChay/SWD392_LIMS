@@ -46,6 +46,7 @@ public class PurchasingService {
     public List<com.lims.model.Handover> getHandovers(int userId) { return purchasingDAO.findHandoversByCreator(userId); }
     public List<User> getWarehouseStaff() { return purchasingDAO.findActiveWarehouseStaff(); }
     public List<ImportRequestItem> getAvailableHandoverItems(int requestId) { return purchasingDAO.findAvailableHandoverItems(requestId); }
+    public List<String> getWarehouseLocations() { return purchasingDAO.findAllWarehouseLocations(); }
     public com.lims.model.Handover getHandover(int userId, int handoverId) { return purchasingDAO.findHandoverByCreator(userId, handoverId); }
 
     public Map<String, Integer> getDashboard(int userId) {
@@ -172,6 +173,10 @@ public class PurchasingService {
         int receiverId = positiveInt(receiverValue, "Vui lòng chọn nhân viên kho tiếp nhận.");
         String cleanLocation = location == null ? "" : location.trim();
         if (cleanLocation.isEmpty() || cleanLocation.length() > 255) throw new IllegalArgumentException("Địa điểm bàn giao là bắt buộc, tối đa 255 ký tự.");
+        List<String> validLocations = purchasingDAO.findAllWarehouseLocations();
+        if (!validLocations.isEmpty() && !validLocations.contains(cleanLocation)) {
+            throw new IllegalArgumentException("Địa điểm bàn giao không hợp lệ. Vui lòng chọn vị trí kho có sẵn trong hệ thống.");
+        }
         int packageCount = positiveInt(packageCountValue, "Số kiện/thùng phải lớn hơn 0.");
         if (productValues == null || quantityValues == null || productValues.length != quantityValues.length)
             throw new IllegalArgumentException("Chi tiết sản phẩm bàn giao không hợp lệ.");

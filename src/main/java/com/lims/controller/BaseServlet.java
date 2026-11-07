@@ -20,6 +20,9 @@ public abstract class BaseServlet extends HttpServlet {
 
     protected void forward(HttpServletRequest req, HttpServletResponse resp, String jspPath)
             throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html;charset=UTF-8");
         req.getRequestDispatcher("/WEB-INF/views/" + jspPath).forward(req, resp);
     }
 

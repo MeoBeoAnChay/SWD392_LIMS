@@ -122,4 +122,26 @@ public class User implements Serializable {
         }
         return false;
     }
+
+    /**
+     * Returns the primary landing URL for the user based on their role.
+     */
+    public String getDefaultRedirectUrl() {
+        if (hasRole("Admin")) {
+            return "/app/admin/users";
+        }
+        if (hasRole("Manager")) {
+            return "/app/manager/dashboard";
+        }
+        if (hasRole("Warehouse Staff")) {
+            return "/app/warehouse/dashboard";
+        }
+        if (hasRole("Purchasing Staff")) {
+            return "/app/purchasing/dashboard";
+        }
+        if (hasRole("Sales Staff")) {
+            return "/app/sales/export-requests";
+        }
+        return "/login";
+    }
 }
